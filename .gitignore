@@ -17,4 +17,7 @@ token.txt
 *.log
 *.cast
 
+#ansible
+*.vscode
+
 
