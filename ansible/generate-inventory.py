@@ -3,7 +3,6 @@ This script is used to generate the inventory file for Ansible by authenticating
 Prerequisites: 
 - A Boundary cluster 
 - A Boundary target with an alias and an associated host catalog (this example assumes multiple hosts in the same target)
-- 
 
 Expected output: an Ansible inventory file with the corresponding ports for each Boundary connection.
 '''
