@@ -1,0 +1,20 @@
+#python environment:
+*.venv
+
+#terraform stuff:
+*.terraform*
+*tfstate*
+*.tfvars
+
+#other:
+*pub
+*pem
+data.json
+.DS_Store
+*domain*
+*crt
+token.txt
+*.log
+*.cast
+
+
