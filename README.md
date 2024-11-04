@@ -28,7 +28,7 @@ git clone https://github.com/ricardorompar/boundary-ansible-demo.git && cd bound
 You'll need a Boundary target with a named alias and credential injection configured for that target. If you have an existing one feel free to move to step 3. Or, you can deploy the demo example by following the commands in step 2.
 
 ### 2. Deploy infrastructure
-For a detailed explanation check the [README](./Infrastructure/README.md) from the Infrastructure directory.
+For a detailed explanation check the [README](./infrastructure/README.md) from the Infrastructure directory.
 
 #### 2.1. Deploy the 'Plataforma' (Boundary and Vault clusters)
 ```bash
@@ -43,13 +43,13 @@ export BOUNDARY_ADDR=$(terraform output -raw boundary_public_url)
 export VAULT_ADDR=$( terraform output -raw vault_public_url)
 export VAULT_NAMESPACE=admin
 export VAULT_TOKEN=$(terraform output -raw vault_token)
-# Log to boundary interactively using password Auth with admin user
+# Log to boundary interactively. You'll be asked for the password
 boundary authenticate password -password=''
 export TF_VAR_authmethod=$(boundary auth-methods list -format json | jq -r '.items[0].id')
 ```
 
 #### 2.2. Deploy the target:
-> If you feel like trying some things out you can change the number of VMs created by modifying the `hosts_number` variable in the [variables](./Infrastructure/Target/variables.tf) file.
+> If you feel like trying some things out you can change the number of VMs created by modifying the `hosts_number` variable in the [variables](./infrastructure/Target/variables.tf) file.
 
 ```bash
 # Configure Vault:
@@ -89,9 +89,9 @@ python3 generate_inventory.py ssh.ansible.boundary.demo   #Change according to y
 You should see an `inventory.ini` file created under the `/ansible` directory. This file was populated with the IP addresses and ports of the connections created by Boundary, this is what Ansible will use to establish a secure connection (on top of SSH) to each of the hosts in the target.
 
 ### 4. Execute the playbook
-This demo uses a simple [playbook](./Ansible/playbook.yaml) example that only executes a basic ping and prints a message from each of the connected hosts. 
+This demo uses a simple [playbook](./ansible/playbook.yaml) example that only executes a basic ping and prints a message from each of the connected hosts. 
 
-The Python script handling the connections should be running in the current terminal. To run the playbook with the inventory file that was just generated open a new terminal, go to the `Ansible` directory and run:
+The Python script handling the connections should be running in the current terminal. To run the playbook with the inventory file that was just generated open a new terminal, go to the `ansible` directory and run:
 
 ```bash
 ansible-playbook -i inventory.ini playbook.yaml
@@ -128,10 +128,25 @@ server1                    : ok=3    changed=0    unreachable=0    failed=0    s
 server2                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 ### 5. Stop connections
-> ⚠️ Work in progress...
-To stop the open connections with Boundary go back to the terminal running the Python program and press `CTRL+c`
+To stop the open connections with Boundary go back to the terminal running the Python script and press `CTRL+c`
 
 ### 6. Cleanup 
-> ⚠️ Work in progress...
+If you ran every step sequentially you should currently be in the `/ansible` directory. Now we'll destroy everything from the last to the first resource.
+
+Move back to `infrastructure/Target`:
+
+```bash
+# Destroy target:
+cd ../infrastructure/Target
+terraform destroy -auto-approve
+
+# Destroy Vault configurations:
+cd vault_config
+terraform destroy -auto-approve
+
+# Destroy plataforma:
+cd ../../Plataforma
+terraform destroy -auto-approve
+```
 
 

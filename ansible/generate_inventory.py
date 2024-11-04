@@ -74,10 +74,28 @@ def connect_boundary(target_alias: str, hosts: dict) -> None:
     connected_loop()
     return
 
+def detect_sessions(connections: list) -> bool:
+    # I use this function to detect if the number of open sessions matches the number of intended connections 
+    # (aka connections successful)  
+    time.sleep(2)
+    try:     
+        sessions = os.popen(f"boundary sessions list -recursive -format=json")
+        sessions = json.loads(sessions.read())['items']
+        return len(sessions) >= len(connections)
+    except:
+        print("No sessions detected yet")
+
 def make_inventory() -> list:
     # This function reads the output (stdout) of each subprocess. 
     # This is needed because of the blocking nature of each "boundary connect"
-    time.sleep(3)
+    timeout = 0
+    while not detect_sessions(connect_procs):
+        #if the number of sessions is not equal to the number of intended connections try again:
+        timeout += 1
+        print("Retrieving sessions information...")
+        if timeout >= len(connect_procs)*10: #Each connection shouldn't take longer than 20 seconds to establish
+            raise TimeoutError("Error establishing connection to Boundary target")
+
     mygroup = []
     for index, process in enumerate(connect_procs):
         while True:
@@ -96,7 +114,7 @@ def connected_loop() -> None:
     mygroup = make_inventory()
     msg = "Hosts: "
     for host in mygroup:
-        msg+=f"{host["ip"]}:{host["port"]}  "
+        msg+=f"{host["ip"]}:{host["port"]} | "
 
     elapsed = 0
     while True:
@@ -108,10 +126,12 @@ def connected_loop() -> None:
         os.system("clear")
 
 def signal_handler(signum, frame):
+    #This function is only used to detect the ctrl+c signal
     print(f"Exiting connections.")
     for index, process in enumerate(connect_procs):
         print(f"Terminating connection with host {index}...")
         process.terminate()
+        time.sleep(0.5)
     sys.exit(0)
 
 if __name__ == "__main__":
