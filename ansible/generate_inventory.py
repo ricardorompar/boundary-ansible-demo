@@ -101,6 +101,7 @@ def connected_loop() -> None:
     elapsed = 0
     while True:
         print(f"Connection to target open for {elapsed} second(s)")
+        print(msg)
         print("Press CTRL+C to terminate connections.")
         elapsed+=1
         time.sleep(1)

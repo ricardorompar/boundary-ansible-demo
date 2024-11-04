@@ -71,6 +71,36 @@ The Python script handling the connections should be running in the current term
 ansible-playbook -i inventory.ini playbook.yaml
 ```
 
+This is more or less what the output should look like:
+```
+PLAY [My first play] ***********************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [server2]
+ok: [server0]
+ok: [server1]
+
+TASK [Ping my hosts] ***********************************************************
+ok: [server2]
+ok: [server1]
+ok: [server0]
+
+TASK [Print message] ***********************************************************
+ok: [server0] => {
+    "msg": "Hello world"
+}
+ok: [server1] => {
+    "msg": "Hello world"
+}
+ok: [server2] => {
+    "msg": "Hello world"
+}
+
+PLAY RECAP *********************************************************************
+server0                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+server1                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+server2                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
 ### 5. Stop connections
 > ⚠️ Work in progress...
 To stop the open connections with Boundary go back to the terminal running the Python program and press `CTRL+c`
