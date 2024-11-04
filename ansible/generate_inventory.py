@@ -115,11 +115,10 @@ def signal_handler(signum, frame):
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
-    # Comment out this line if you've already authenticating to Boundary in the current session:
+    # Comment out this line if you've already authenticated to Boundary in the current session:
     authenticate_boundary()
 
     # When executing this script use the alias in the command line. For example: python3 generate-inventory.py alias
-    # target_alias = "scenario1.boundary.demo"
     try: 
         target_alias = sys.argv[1] #alias name should be the second argument in the command line
     except:

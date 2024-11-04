@@ -57,7 +57,7 @@ cd ../ansible
 
 Run the `generate_inventory.py` with the alias of your target. If you're using the example target deployed in step 2 this will look like:
 ```bash
-python3 generate_inventory.py scenario1.boundary.demo   #change according to your alias
+python3 generate_inventory.py scenario1.boundary.demo   #Change according to your alias
 ```
 
 You should see an `inventory.ini` file created under the `/ansible` directory. This file was populated with the IP addresses and ports of the connections created by Boundary, this is what Ansible will use to establish a secure connection (on top of SSH) to each of the hosts in the target.
