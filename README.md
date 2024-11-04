@@ -78,7 +78,7 @@ export BOUNDARY_ADDR=<your-boundary-cluster-url>
 Change to the Ansible directory:
 
 ```bash
-cd ../ansible
+cd ../../ansible
 ```
 
 Run the `generate_inventory.py` with the alias of your target. If you're using the example target deployed in step 2 this will look like:
@@ -138,6 +138,7 @@ Move back to `infrastructure/Target`:
 ```bash
 # Destroy target:
 cd ../infrastructure/Target
+rm -f cert.pem
 terraform destroy -auto-approve
 
 # Destroy Vault configurations:
