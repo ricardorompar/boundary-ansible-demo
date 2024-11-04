@@ -12,8 +12,6 @@ In this example, the playbook only does a basic ping and prints a message from e
 
 ## Prerequisites
 In order to execute this workflow you'll need to have installed or configured the following resources and apps:
-- A Boundary cluster.
-- A Vault cluster to configure credential injection for your target hosts.
 - Terraform to deploy the demo target (version used in this demo: 1.9.5)
 - An AWS account where your target will be created.
 - Python (version used in this demo: 3.13)
