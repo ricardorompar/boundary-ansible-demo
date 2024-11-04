@@ -41,7 +41,7 @@ def authenticate_boundary() -> None:
     # NOTE: you need to have set the following environment variables:
     # - BOUNDARY_AUTHENTICATE_PASSWORD_PASSWORD
     # - BOUNDARY_AUTHENTICATE_PASSWORD_LOGIN_NAME
-    # - BOUNDARY-ADDR: the URL of your Boundary cluster
+    # - BOUNDARY_ADDR: the URL of your Boundary cluster
     os.system("boundary authenticate password -password='env://BOUNDARY_AUTHENTICATE_PASSWORD_PASSWORD'")
 
 def get_boundary_hosts(target_alias) -> dict:
@@ -92,7 +92,7 @@ def make_inventory() -> list:
     return mygroup
 
 def connected_loop() -> None:
-    # When this process is killed (gracefully, SIGINT) the connection to the Boundary hosts is terminated gracefully
+    # When this process is killed (gracefully, SIGINT) the connection to each Boundary host is terminated gracefully
     mygroup = make_inventory()
     msg = "Hosts: "
     for host in mygroup:
@@ -116,8 +116,16 @@ def signal_handler(signum, frame):
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
     # Comment out this line if you've already authenticating to Boundary in the current session:
-    #authenticate_boundary()
+    authenticate_boundary()
 
-    target_alias = "scenario1.boundary.demo"
+    # When executing this script use the alias in the command line. For example: python3 generate-inventory.py alias
+    # target_alias = "scenario1.boundary.demo"
+    try: 
+        target_alias = sys.argv[1] #alias name should be the second argument in the command line
+    except:
+        print("Boundary target alias not found")
+        print("Please provide target alias to establish a connection")
+        sys.exit(0)
+
     hosts = get_boundary_hosts(target_alias)
     hosts_info = connect_boundary(target_alias, hosts)
