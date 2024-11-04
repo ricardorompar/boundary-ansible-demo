@@ -63,9 +63,19 @@ python3 generate_inventory.py scenario1.boundary.demo   #change according to you
 You should see an `inventory.ini` file created under the `/ansible` directory. This file was populated with the IP addresses and ports of the connections created by Boundary, this is what Ansible will use to establish a secure connection (on top of SSH) to each of the hosts in the target.
 
 ### 4. Execute the playbook
-This demo uses a simple [playbook](./ansible/playbook.yaml) example that only executes a basic ping and prints a message from each of the connected hosts. To run the playbook with the inventory file that was just generated run:
+This demo uses a simple [playbook](./ansible/playbook.yaml) example that only executes a basic ping and prints a message from each of the connected hosts. 
+
+The Python script handling the connections should be running in the current terminal. To run the playbook with the inventory file that was just generated open a new terminal, go to the `ansible` directory and run:
+
 ```bash
-ansible-playbook
+ansible-playbook -i inventory.ini playbook.yaml
 ```
+
+### 5. Stop connections
+> ⚠️ Work in progress...
+To stop the open connections with Boundary go back to the terminal running the Python program and press `CTRL+c`
+
+### 6. Cleanup 
+> ⚠️ Work in progress...
 
 
