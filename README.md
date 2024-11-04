@@ -8,7 +8,7 @@ The basic workflow is:
 - Credentials are injected using Vault
 - Ansible playbook execution
 
-In this example the playbook only does a basic ping from every server in the inventory.
+In this example, the playbook only does a basic ping and prints a message from every server in the inventory.
 
 ## Prerequisites
 In order to execute this workflow you'll need to have installed or configured the following resources and apps:
@@ -30,25 +30,53 @@ git clone https://github.com/ricardorompar/boundary-ansible-demo.git && cd bound
 You'll need a Boundary target with a named alias and credential injection configured for that target. If you have an existing one feel free to move to step 3. Or, you can deploy the demo example by following the commands in step 2.
 
 ### 2. Deploy infrastructure
-> ⚠️ Work in progress...
+For a detailed explanation check the [README](./Infrastructure/README.md) from the Infrastructure directory.
+
+#### 2.1. Deploy the 'Plataforma' (Boundary and Vault clusters)
 ```bash
-#work in progress...
-cd infrastructure
+cd Infrastructure/Plataforma
 terraform init
 terraform apply -auto-approve
 ```
 
+Run these commands to create the required environment variables:
+```bash
+export BOUNDARY_ADDR=$(terraform output -raw boundary_public_url)
+export VAULT_ADDR=$( terraform output -raw vault_public_url)
+export VAULT_NAMESPACE=admin
+export VAULT_TOKEN=$(terraform output -raw vault_token)
+# Log to boundary interactively using password Auth with admin user
+boundary authenticate password -password=''
+export TF_VAR_authmethod=$(boundary auth-methods list -format json | jq -r '.items[0].id')
+```
+
+#### 2.2. Deploy the target:
+> If you feel like trying some things out you can change the number of VMs created by modifying the `hosts_number` variable in the [variables](./Infrastructure/Target/variables.tf) file.
+
+```bash
+# Configure Vault:
+cd ../Target/vault_config
+terraform init
+terraform apply -auto-approve
+
+#Deploy target:
+cd ..
+terraform init
+terraform apply -auto-approve
+
+```
+
 ### 3. Generate `inventory.ini` file
 
-#### Environment variables
-In order to successfully generate the inventory file you'll need to specify the environment variables needed to connect to Boundary:
+#### 3.1. Environment variables
+In order to successfully generate the inventory file you'll need to specify the environment variables needed to connect to Boundary. Ignore this step if you already created them in step 2.1:
 ```bash
 export BOUNDARY_AUTHENTICATE_PASSWORD_PASSWORD=<your-boundary-password>
 export BOUNDARY_AUTHENTICATE_PASSWORD_LOGIN_NAME=<your-boundary-login-name>
 export BOUNDARY_ADDR=<your-boundary-cluster-url>
 ```
 
-#### Inventory
+#### 3.2. Inventory
 Change to the Ansible directory:
 
 ```bash
@@ -57,15 +85,15 @@ cd ../ansible
 
 Run the `generate_inventory.py` with the alias of your target. If you're using the example target deployed in step 2 this will look like:
 ```bash
-python3 generate_inventory.py scenario1.boundary.demo   #Change according to your alias
+python3 generate_inventory.py ssh.ansible.boundary.demo   #Change according to your alias
 ```
 
 You should see an `inventory.ini` file created under the `/ansible` directory. This file was populated with the IP addresses and ports of the connections created by Boundary, this is what Ansible will use to establish a secure connection (on top of SSH) to each of the hosts in the target.
 
 ### 4. Execute the playbook
-This demo uses a simple [playbook](./ansible/playbook.yaml) example that only executes a basic ping and prints a message from each of the connected hosts. 
+This demo uses a simple [playbook](./Ansible/playbook.yaml) example that only executes a basic ping and prints a message from each of the connected hosts. 
 
-The Python script handling the connections should be running in the current terminal. To run the playbook with the inventory file that was just generated open a new terminal, go to the `ansible` directory and run:
+The Python script handling the connections should be running in the current terminal. To run the playbook with the inventory file that was just generated open a new terminal, go to the `Ansible` directory and run:
 
 ```bash
 ansible-playbook -i inventory.ini playbook.yaml

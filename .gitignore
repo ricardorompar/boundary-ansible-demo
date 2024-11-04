@@ -19,5 +19,7 @@ token.txt
 
 #ansible
 *.vscode*
+#Just to avoid commiting every new inventory file:
+*.ini
 
 

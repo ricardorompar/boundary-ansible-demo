@@ -86,7 +86,7 @@ def make_inventory() -> list:
                 mygroup.append({"ip":output["address"], "port":output["port"]})
                 #Write new line to inventory file:
                 with open("inventory.ini", "a+") as inventory:
-                    line = f"server{index} ansible_host={output["address"]} ansible_port={output["port"]} ansible_user=ubuntu ansible_ssh_private_key_file=./cert.pem"
+                    line = f"server{index} ansible_host={output["address"]} ansible_port={output["port"]}"
                     inventory.write(f"{line}\n")
                 break # move on to the next server
     return mygroup

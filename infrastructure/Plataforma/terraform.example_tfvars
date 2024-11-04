@@ -1,0 +1,8 @@
+username        = "admin"
+password        = "SuperSecret123!"
+tier            = "plus_small"
+datadog_api_key = "your key" # Remove code relative to Datadog if Not required
+aws_vpc_cidr    = "172.31.0.0/16" 
+vault_cluster_id    = "hcp-vault-cluster-for-boundary"
+boundary_cluster_id = "hcp-boundary-cluster"
+scenario1_alias     = "scenario1.boundary.demo"
