@@ -48,7 +48,7 @@ terraform apply -auto-approve
 ```
 
 ### 3.2. Deploy target
-The target references to a host catalog that by default contains 3 VMs (hosts). You can change the number of VMs created by modifying the `hosts_number` variable in the [variables](./Infrastructure/Target/variables.tf) file.
+The target references to a host catalog that by default contains 3 VMs (hosts). You can change the number of VMs created by modifying the `hosts_number` variable in the [variables](./infrastructure/Target/variables.tf) file.
 
 ```bash
 cd ..

@@ -1,12 +1,15 @@
 # Ansible + Boundary
 This repo contains the necessary resources to DEMO the interaction with Ansible using the secure remote access capabilities from Boundary. This integration is achieved by dynamically generating an inventory file for Ansible using the IPs and ports provided by Boundary when a connection is established to a remote host.
 
+![Ansible + Boundary workflow diagram](./src/Boundary%20Ansible.png)
+
 The basic workflow is:
-- Authentication to Boundary: guarantees RBAC to the required targets
-- Dynamic generation of the inventory file
-- Ansible uses the tunnel created by Boundary 
-- Credentials are injected using Vault
-- Ansible playbook execution
+0. Authentication to Boundary: guarantees RBAC to the required targets
+1. Python script: generates Boundary clients to connect to the target
+2. Boundary identifies the hosts in the target
+3. Credential injection using Vault provides a passwordless experience
+4. Inventory file for Ansible is generated using the addresses and ports provided by Boundary
+5. Secure connection between Ansible and hosts via a secure tunnel provided by Boundary
 
 In this example, the playbook only does a basic ping and prints a message from every server in the inventory.
 
