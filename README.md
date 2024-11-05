@@ -35,6 +35,7 @@ You'll need a Boundary target with a named alias and credential injection config
 For a detailed explanation check the [README](./infrastructure/README.md) from the Infrastructure directory.
 
 #### 2.1. Deploy the 'Plataforma' (Boundary and Vault clusters)
+> ⚠️ NOTE: These resources should take around 5-7 minutes to create
 ```bash
 cd Infrastructure/Plataforma
 terraform init
