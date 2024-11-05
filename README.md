@@ -4,6 +4,7 @@ This repo contains the necessary resources to DEMO the interaction with Ansible 
 ![Ansible + Boundary workflow diagram](./src/Boundary%20Ansible.png)
 
 The basic workflow is:
+
 0. Authentication to Boundary: guarantees RBAC to the required targets
 1. Python script: generates Boundary clients to connect to the target
 2. Boundary identifies the hosts in the target
