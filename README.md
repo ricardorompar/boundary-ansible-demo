@@ -138,8 +138,8 @@ To stop the open connections with Boundary go back to the terminal running the P
 ### 6. Cleanup 
 If you ran every step sequentially you should currently be in the `/ansible` directory. Now we'll destroy everything from the last to the first resource.
 
-Move back to `infrastructure/Target`:
-
+If you're not in the `/ansible` dir you can move back to it and run the following commands:
+> ⚠️ NOTE: These resources should take around 5-10 minutes to destroy
 ```bash
 # Destroy target:
 cd ../infrastructure/Target

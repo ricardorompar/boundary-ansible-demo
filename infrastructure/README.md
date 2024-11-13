@@ -15,7 +15,7 @@ cd infrastructure/
 ```
 
 ## 1. Create the Plataforma
-> ⚠️ NOTE: These resources should take around 5-7 minutes to create
+> ⚠️ NOTE: These resources should take around 5-10 minutes to create
 ```bash
 cd Plataforma/
 
