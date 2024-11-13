@@ -51,13 +51,13 @@ variable "cloud_provider" {
 variable "vault_tier" {
   description = "Tier of the HCP Vault cluster. Valid options for tiers."
   type        = string
-  default     = "development"
+  default     = "dev"
 }
 
 variable "boundary_tier" {
   description = "Tier of the HCP Boundary cluster. Valid options for tiers."
   type        = string
-  default     = "plus"
+  default     = "PLUS"
 }
 
 variable "aws_vpc_cidr" {
